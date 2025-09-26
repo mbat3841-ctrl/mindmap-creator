@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  
+  html.dark {
+    color-scheme: dark;
+  }
+  
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  }
+}
+
+@layer components {
+  .react-flow__node {
+    @apply select-none;
+  }
+  
+  .react-flow__handle {
+    @apply opacity-0 transition-opacity duration-200;
+  }
+  
+  .react-flow__node:hover .react-flow__handle {
+    @apply opacity-100;
+  }
+  
+  .react-flow__controls {
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg;
+  }
+  
+  .react-flow__controls button {
+    @apply bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 border-none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  .react-flow__controls {
+    @apply scale-90;
+  }
+  
+  .react-flow__minimap {
+    @apply scale-75;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .react-flow__handle {
+    @apply opacity-100;
+  }
+  
+  .react-flow__node {
+    @apply touch-manipulation;
+  }
+}
