@@ -29,6 +29,8 @@ export const TopMenu: React.FC<TopMenuProps> = ({
   onShowTemplates,
 }) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [showExportMenu, setShowExportMenu] = React.useState(false);
+  const exportMenuRef = React.useRef<HTMLDivElement>(null);
 
   const handleImportClick = () => {
     fileInputRef.current?.click();
@@ -42,6 +44,22 @@ export const TopMenu: React.FC<TopMenuProps> = ({
     e.target.value = '';
   };
 
+  // Close export menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(event.target as Node)) {
+        setShowExportMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleExportClick = (exportFn: () => void) => {
+    exportFn();
+    setShowExportMenu(false);
+  };
   return (
     <div className="h-14 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-2 sm:px-4">
       <div className="flex items-center space-x-1 overflow-x-auto">
@@ -100,30 +118,34 @@ export const TopMenu: React.FC<TopMenuProps> = ({
 
           <div className="h-6 w-px bg-gray-200 dark:bg-gray-600 mx-1 sm:mx-2 hidden sm:block"></div>
 
-          <div className="relative group">
-            <button className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 flex items-center space-x-1 flex-shrink-0">
+          <div className="relative" ref={exportMenuRef}>
+            <button 
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 flex items-center space-x-1 flex-shrink-0"
+            >
               <Download size={14} className="sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Export</span>
             </button>
             
-            <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            {showExportMenu && (
+              <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50">
               <div className="py-1">
                 <button
-                  onClick={onExportPNG}
+                  onClick={() => handleExportClick(onExportPNG)}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <Image size={16} />
                   <span>Export as PNG</span>
                 </button>
                 <button
-                  onClick={onExportSVG}
+                  onClick={() => handleExportClick(onExportSVG)}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <FileImage size={16} />
                   <span>Export as SVG</span>
                 </button>
                 <button
-                  onClick={onExportPDF}
+                  onClick={() => handleExportClick(onExportPDF)}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <FileText size={16} />
@@ -131,14 +153,15 @@ export const TopMenu: React.FC<TopMenuProps> = ({
                 </button>
                 <div className="h-px bg-gray-200 dark:bg-gray-600 my-1"></div>
                 <button
-                  onClick={onExportJSON}
+                  onClick={() => handleExportClick(onExportJSON)}
                   className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <Upload size={16} />
                   <span>Save as JSON</span>
                 </button>
               </div>
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
