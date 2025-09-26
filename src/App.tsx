@@ -156,12 +156,19 @@ function App() {
       setEdges((eds) => eds.filter((edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id));
       setSelectedNode(null);
       saveToHistory();
+      return;
     }
     if (selectedEdge) {
       setEdges((eds) => eds.filter((edge) => edge.id !== selectedEdge.id));
       setSelectedEdge(null);
       saveToHistory();
+      return;
     }
+    
+    // If nothing is specifically selected, delete all selected nodes/edges from ReactFlow
+    setNodes((nds) => nds.filter((node) => !node.selected));
+    setEdges((eds) => eds.filter((edge) => !edge.selected));
+    saveToHistory();
   }, [selectedNode, selectedEdge, setNodes, setEdges, saveToHistory]);
 
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
@@ -248,11 +255,6 @@ function App() {
             e.preventDefault();
             redo();
             break;
-          case 'Delete':
-          case 'Backspace':
-            e.preventDefault();
-            deleteSelected();
-            break;
         }
       }
       if (e.key === 'Delete' || e.key === 'Backspace') {
@@ -293,6 +295,7 @@ function App() {
           onToggleSnap={() => setSnapToGrid(!snapToGrid)}
           selectedTool={selectedTool}
           onSelectTool={setSelectedTool}
+          hasSelection={selectedNode !== null || selectedEdge !== null || nodes.some(n => n.selected) || edges.some(e => e.selected)}
         />
 
         <div className="flex-1 relative order-first lg:order-none">

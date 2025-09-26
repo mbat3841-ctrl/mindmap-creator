@@ -29,7 +29,7 @@ export const CircleNode = ({ data, selected, id }: NodeProps<CustomNodeType['dat
   return (
     <div
       className={`relative w-20 sm:w-24 h-20 sm:h-24 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-200 ${
-        selected ? 'ring-2 ring-blue-400 ring-opacity-75' : ''
+        selected ? 'ring-2 ring-blue-500 ring-opacity-75 shadow-lg' : ''
       }`}
       style={{
         backgroundColor: data.backgroundColor,
@@ -93,7 +93,7 @@ export const RectangleNode = ({ data, selected }: NodeProps<CustomNodeType['data
   return (
     <div
       className={`relative w-28 sm:w-32 h-14 sm:h-16 border-2 flex items-center justify-center cursor-pointer transition-all duration-200 rounded-lg ${
-        selected ? 'ring-2 ring-blue-400 ring-opacity-75' : ''
+        selected ? 'ring-2 ring-blue-500 ring-opacity-75 shadow-lg' : ''
       }`}
       style={{
         backgroundColor: data.backgroundColor,
@@ -156,7 +156,7 @@ export const DiamondNode = ({ data, selected }: NodeProps<CustomNodeType['data']
   return (
     <div
       className={`relative w-20 sm:w-24 h-20 sm:h-24 border-2 flex items-center justify-center cursor-pointer transition-all duration-200 ${
-        selected ? 'ring-2 ring-blue-400 ring-opacity-75' : ''
+        selected ? 'ring-2 ring-blue-500 ring-opacity-75 shadow-lg' : ''
       }`}
       style={{
         backgroundColor: data.backgroundColor,

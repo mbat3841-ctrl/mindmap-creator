@@ -12,6 +12,7 @@ interface ToolbarProps {
   onToggleSnap: () => void;
   selectedTool: string;
   onSelectTool: (tool: string) => void;
+  hasSelection: boolean;
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -25,6 +26,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleSnap,
   selectedTool,
   onSelectTool,
+  hasSelection,
 }) => {
   return (
     <div className="w-16 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col items-center py-4 space-y-4">
@@ -71,8 +73,13 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       <div className="space-y-2">
         <button
           onClick={onDelete}
-          className="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors duration-200"
-          title="Delete Selected"
+          className={`p-3 rounded-lg transition-colors duration-200 ${
+            hasSelection
+              ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
+              : 'bg-gray-50 dark:bg-gray-800 text-gray-300 dark:text-gray-600 cursor-not-allowed'
+          }`}
+          title={hasSelection ? "Delete Selected" : "Select items to delete"}
+          disabled={!hasSelection}
         >
           <Trash2 size={18} />
         </button>
