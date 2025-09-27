@@ -1,7 +1,7 @@
 import React from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { CustomNode, CustomEdge } from '../types';
-import { X, Palette, Type, BorderAll } from 'lucide-react';
+import { X, Palette, Type, ListOrdered as BorderAll } from 'lucide-react';
 
 interface PropertyPanelProps {
   selectedNode: CustomNode | null;
