@@ -213,7 +213,12 @@ function App() {
         node.id === id ? { ...node, data: { ...node.data, ...updates } } : node
       )
     );
-    // Don't save to history for every keystroke, only on blur/enter
+    // Update selected node if it's the one being updated
+    setSelectedNode((current) => 
+      current && current.id === id 
+        ? { ...current, data: { ...current.data, ...updates } }
+        : current
+    );
   }, [setNodes, saveToHistory]);
 
   const updateEdge = useCallback((id: string, updates: Partial<CustomEdge>) => {
@@ -222,7 +227,12 @@ function App() {
         edge.id === id ? { ...edge, ...updates } : edge
       )
     );
-    // Don't save to history for every change, only when done editing
+    // Update selected edge if it's the one being updated
+    setSelectedEdge((current) => 
+      current && current.id === id 
+        ? { ...current, ...updates }
+        : current
+    );
   }, [setEdges, saveToHistory]);
 
   const clearCanvas = useCallback(() => {
