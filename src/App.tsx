@@ -112,6 +112,16 @@ function App() {
     }
   }, []);
 
+  // Listen for save to history events
+  useEffect(() => {
+    const handleSaveToHistory = () => {
+      saveToHistory();
+    };
+
+    window.addEventListener('saveToHistory', handleSaveToHistory);
+    return () => window.removeEventListener('saveToHistory', handleSaveToHistory);
+  }, [saveToHistory]);
+
   // Save theme to localStorage
   useEffect(() => {
     localStorage.setItem('theme', theme);
@@ -119,6 +129,7 @@ function App() {
 
   const onConnect = useCallback(
     (params: Connection) => {
+      if (!params.source || !params.target) return;
       const newEdge: Edge = {
         ...params,
         id: uuidv4(),
@@ -151,24 +162,34 @@ function App() {
   }, [setNodes, saveToHistory]);
 
   const deleteSelected = useCallback(() => {
+    let hasDeleted = false;
+    
     if (selectedNode) {
       setNodes((nds) => nds.filter((node) => node.id !== selectedNode.id));
       setEdges((eds) => eds.filter((edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id));
       setSelectedNode(null);
-      saveToHistory();
-      return;
+      hasDeleted = true;
     }
+    
     if (selectedEdge) {
       setEdges((eds) => eds.filter((edge) => edge.id !== selectedEdge.id));
       setSelectedEdge(null);
-      saveToHistory();
-      return;
+      hasDeleted = true;
     }
     
     // If nothing is specifically selected, delete all selected nodes/edges from ReactFlow
-    setNodes((nds) => nds.filter((node) => !node.selected));
-    setEdges((eds) => eds.filter((edge) => !edge.selected));
-    saveToHistory();
+    const selectedNodes = nodes.filter(node => node.selected);
+    const selectedEdges = edges.filter(edge => edge.selected);
+    
+    if (selectedNodes.length > 0 || selectedEdges.length > 0) {
+      setNodes((nds) => nds.filter((node) => !node.selected));
+      setEdges((eds) => eds.filter((edge) => !edge.selected));
+      hasDeleted = true;
+    }
+    
+    if (hasDeleted) {
+      saveToHistory();
+    }
   }, [selectedNode, selectedEdge, setNodes, setEdges, saveToHistory]);
 
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
@@ -192,7 +213,7 @@ function App() {
         node.id === id ? { ...node, data: { ...node.data, ...updates } } : node
       )
     );
-    saveToHistory();
+    // Don't save to history for every keystroke, only on blur/enter
   }, [setNodes, saveToHistory]);
 
   const updateEdge = useCallback((id: string, updates: Partial<CustomEdge>) => {
@@ -201,7 +222,7 @@ function App() {
         edge.id === id ? { ...edge, ...updates } : edge
       )
     );
-    saveToHistory();
+    // Don't save to history for every change, only when done editing
   }, [setEdges, saveToHistory]);
 
   const clearCanvas = useCallback(() => {
@@ -241,6 +262,11 @@ function App() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts when typing in inputs
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      
       if (e.ctrlKey || e.metaKey) {
         switch (e.key) {
           case 'z':

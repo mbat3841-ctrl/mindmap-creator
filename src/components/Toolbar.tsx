@@ -78,7 +78,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-300 dark:text-gray-600 cursor-not-allowed'
           }`}
-          title={hasSelection ? "Delete Selected" : "Select items to delete"}
+          title={hasSelection ? "Delete Selected (Del)" : "Select items to delete"}
           disabled={!hasSelection}
         >
           <Trash2 size={18} />

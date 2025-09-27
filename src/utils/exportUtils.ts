@@ -7,19 +7,31 @@ export const exportToPNG = async (elementId: string, filename: string = 'mindmap
   if (!element) return;
 
   try {
+    // Show loading state
+    const originalCursor = document.body.style.cursor;
+    document.body.style.cursor = 'wait';
+
     const canvas = await html2canvas(element, {
       backgroundColor: '#ffffff',
       scale: 2,
       useCORS: true,
       allowTaint: true,
       logging: false,
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      scrollX: 0,
+      scrollY: 0,
     });
     
     const link = document.createElement('a');
     link.download = `${filename}.png`;
     link.href = canvas.toDataURL();
     link.click();
+    
+    // Restore cursor
+    document.body.style.cursor = originalCursor;
   } catch (error) {
+    document.body.style.cursor = 'auto';
     console.error('Failed to export PNG:', error);
     alert('Failed to export PNG. Please try again.');
   }
@@ -30,6 +42,10 @@ export const exportToSVG = async (elementId: string, filename: string = 'mindmap
   if (!element) return;
 
   try {
+    // Show loading state
+    const originalCursor = document.body.style.cursor;
+    document.body.style.cursor = 'wait';
+
     // Use html2canvas to create a canvas, then convert to SVG
     const canvas = await html2canvas(element, {
       backgroundColor: '#ffffff',
@@ -37,6 +53,10 @@ export const exportToSVG = async (elementId: string, filename: string = 'mindmap
       useCORS: true,
       allowTaint: true,
       logging: false,
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      scrollX: 0,
+      scrollY: 0,
     });
     
     // Create SVG with embedded image
@@ -54,7 +74,11 @@ export const exportToSVG = async (elementId: string, filename: string = 'mindmap
     link.href = URL.createObjectURL(svgBlob);
     link.click();
     URL.revokeObjectURL(link.href);
+    
+    // Restore cursor
+    document.body.style.cursor = originalCursor;
   } catch (error) {
+    document.body.style.cursor = 'auto';
     console.error('Failed to export SVG:', error);
     alert('Failed to export SVG. Please try again.');
   }

@@ -20,6 +20,18 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
 }) => {
   const [activeColorPicker, setActiveColorPicker] = React.useState<string | null>(null);
 
+  // Close color picker when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (activeColorPicker && !(event.target as Element).closest('.color-picker-container')) {
+        setActiveColorPicker(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [activeColorPicker]);
+
   if (!selectedNode && !selectedEdge) return null;
 
   const ColorPickerSection = ({ 
@@ -51,7 +63,7 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
         />
       </div>
       {activeColorPicker === pickerId && (
-        <div className="mt-2 relative">
+        <div className="mt-2 relative color-picker-container">
           <div className="absolute z-50 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
             <HexColorPicker color={color} onChange={onChange} />
           </div>
@@ -87,6 +99,13 @@ export const PropertyPanel: React.FC<PropertyPanelProps> = ({
               <textarea
                 value={selectedNode.data.label}
                 onChange={(e) => onUpdateNode(selectedNode.id, { label: e.target.value })}
+                onBlur={() => {
+                  // Save to history when done editing
+                  setTimeout(() => {
+                    const event = new CustomEvent('saveToHistory');
+                    window.dispatchEvent(event);
+                  }, 100);
+                }}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 rows={3}
               />

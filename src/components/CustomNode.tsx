@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Handle, Position, NodeProps } from '@xyflow/react';
 import { CustomNode as CustomNodeType } from '../types';
 
@@ -6,21 +6,33 @@ export const CircleNode = ({ data, selected, id }: NodeProps<CustomNodeType['dat
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(data.label);
 
+  // Update local state when data changes
+  useEffect(() => {
+    setLabel(data.label);
+  }, [data.label]);
+
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
 
   const handleBlur = () => {
     setIsEditing(false);
-    data.label = label;
+    // Update the node data properly
+    if (data.label !== label) {
+      data.label = label;
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       setIsEditing(false);
-      data.label = label;
+      if (data.label !== label) {
+        data.label = label;
+      }
     }
     if (e.key === 'Escape') {
+      e.preventDefault();
       setIsEditing(false);
       setLabel(data.label);
     }
@@ -70,21 +82,32 @@ export const RectangleNode = ({ data, selected }: NodeProps<CustomNodeType['data
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(data.label);
 
+  // Update local state when data changes
+  useEffect(() => {
+    setLabel(data.label);
+  }, [data.label]);
+
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
 
   const handleBlur = () => {
     setIsEditing(false);
-    data.label = label;
+    if (data.label !== label) {
+      data.label = label;
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       setIsEditing(false);
-      data.label = label;
+      if (data.label !== label) {
+        data.label = label;
+      }
     }
     if (e.key === 'Escape') {
+      e.preventDefault();
       setIsEditing(false);
       setLabel(data.label);
     }
@@ -133,21 +156,32 @@ export const DiamondNode = ({ data, selected }: NodeProps<CustomNodeType['data']
   const [isEditing, setIsEditing] = useState(false);
   const [label, setLabel] = useState(data.label);
 
+  // Update local state when data changes
+  useEffect(() => {
+    setLabel(data.label);
+  }, [data.label]);
+
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
 
   const handleBlur = () => {
     setIsEditing(false);
-    data.label = label;
+    if (data.label !== label) {
+      data.label = label;
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       setIsEditing(false);
-      data.label = label;
+      if (data.label !== label) {
+        data.label = label;
+      }
     }
     if (e.key === 'Escape') {
+      e.preventDefault();
       setIsEditing(false);
       setLabel(data.label);
     }
