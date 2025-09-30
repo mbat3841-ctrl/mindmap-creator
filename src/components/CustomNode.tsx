@@ -128,10 +128,30 @@ export const RectangleNode = ({ data, selected }: NodeProps<CustomNodeType['data
       }}
       onDoubleClick={handleDoubleClick}
     >
-      <Handle type="target" position={Position.Left} className="w-2 h-2 !bg-gray-400" />
-      <Handle type="source" position={Position.Right} className="w-2 h-2 !bg-gray-400" />
-      <Handle type="target" position={Position.Top} className="w-2 h-2 !bg-gray-400" />
-      <Handle type="source" position={Position.Bottom} className="w-2 h-2 !bg-gray-400" />
+      <Handle 
+        type="target" 
+        position={Position.Left} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ left: -6 }}
+      />
+      <Handle 
+        type="source" 
+        position={Position.Right} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ right: -6 }}
+      />
+      <Handle 
+        type="target" 
+        position={Position.Top} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ top: -6 }}
+      />
+      <Handle 
+        type="source" 
+        position={Position.Bottom} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ bottom: -6 }}
+      />
       
       {isEditing ? (
         <textarea
@@ -204,10 +224,30 @@ export const DiamondNode = ({ data, selected }: NodeProps<CustomNodeType['data']
       }}
       onDoubleClick={handleDoubleClick}
     >
-      <Handle type="target" position={Position.Left} className="w-2 h-2 !bg-gray-400" />
-      <Handle type="source" position={Position.Right} className="w-2 h-2 !bg-gray-400" />
-      <Handle type="target" position={Position.Top} className="w-2 h-2 !bg-gray-400" />
-      <Handle type="source" position={Position.Bottom} className="w-2 h-2 !bg-gray-400" />
+      <Handle 
+        type="target" 
+        position={Position.Left} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ left: -6 }}
+      />
+      <Handle 
+        type="source" 
+        position={Position.Right} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ right: -6 }}
+      />
+      <Handle 
+        type="target" 
+        position={Position.Top} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ top: -6 }}
+      />
+      <Handle 
+        type="source" 
+        position={Position.Bottom} 
+        className="w-3 h-3 !bg-blue-500 !border-2 !border-white shadow-md" 
+        style={{ bottom: -6 }}
+      />
       
       <div style={{ transform: 'rotate(-45deg)' }}>
         {isEditing ? (

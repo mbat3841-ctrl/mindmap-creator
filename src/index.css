@@ -22,10 +22,15 @@
   }
   
   .react-flow__handle {
-    @apply opacity-0 transition-opacity duration-200;
+    @apply opacity-0 transition-opacity duration-200 hover:opacity-100;
+    pointer-events: all;
   }
   
   .react-flow__node:hover .react-flow__handle {
+    @apply opacity-100;
+  }
+  
+  .react-flow__node.selected .react-flow__handle {
     @apply opacity-100;
   }
   

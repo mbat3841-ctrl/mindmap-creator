@@ -129,7 +129,7 @@ function App() {
 
   const onConnect = useCallback(
     (params: Connection) => {
-      if (!params.source || !params.target) return;
+      if (!params.source || !params.target || params.source === params.target) return;
       const newEdge: Edge = {
         ...params,
         id: uuidv4(),
