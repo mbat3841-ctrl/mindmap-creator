@@ -349,6 +349,8 @@ function App() {
               edgeTypes={edgeTypes}
               defaultEdgeOptions={defaultEdgeOptions}
               connectionMode={ConnectionMode.Loose}
+              connectOnClick={false}
+              deleteKeyCode={null}
               snapToGrid={snapToGrid}
               snapGrid={[15, 15]}
               className="bg-white dark:bg-gray-900"
